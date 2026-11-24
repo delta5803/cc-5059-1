@@ -6,6 +6,10 @@
   "scripts": {
     "serve": "node scripts/serve.mjs",
     "test": "node --test 'test/*.test.mjs'",
+    "test:ui": "node --test test/ui-smoke.test.mjs",
     "cli": "node cli/score-cli.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1"
   }
 }

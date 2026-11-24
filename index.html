@@ -53,6 +53,8 @@
         <canvas id="live-roll" width="520" height="150"></canvas>
       </div>
     </div>
+    <h3>过渡追踪（现场，来自段落配乐内核）</h3>
+    <div id="live-transition" class="mono">—</div>
     <h3>调度日志</h3>
     <div id="live-log" class="mono log"></div>
   </section>
@@ -63,13 +65,36 @@
       <button id="btn-render" class="primary">渲染并校验</button>
       <button id="btn-replay">▶ 回放渲染结果</button>
       <button id="btn-demo">载入示例情境</button>
+      <button id="btn-boundary">载入边界示例</button>
       <button id="btn-export">导出情境</button>
+      <button id="btn-score-full">导出乐谱·完整弱起</button>
+      <button id="btn-score-omit">导出乐谱·省略弱起</button>
       <label class="button-like">导入情境<input type="file" id="file-import" accept=".json" hidden></label>
+    </div>
+    <div class="row wrap">
+      <label class="hint" for="resplice-mode">迟到请求策略：</label>
+      <select id="resplice-mode">
+        <option value="legacy">延后到下一乐句接管</option>
+        <option value="immediate">取消未发声拼接，立即重排</option>
+      </select>
     </div>
     <h3>情境序列（可重放）</h3>
     <div id="scenario-view" class="mono">—</div>
+    <h3>调试回放（改请求 / 切换情绪并播放乐句）</h3>
+    <div class="row wrap">
+      <label class="hint" for="probe-req">改请求：</label>
+      <select id="probe-req"></select>
+      <button id="btn-probe-earlier">提前 4 拍</button>
+      <button id="btn-probe-later">推后 4 拍</button>
+      <span class="hint">|</span>
+      <label class="hint" for="mood-switch">切换情绪：</label>
+      <select id="mood-switch"></select>
+      <button id="btn-mood-audition">▶ 播放乐句并显示过渡</button>
+    </div>
     <h3>过渡节奏（计划与接点，实际运算）</h3>
     <div id="joins"></div>
+    <h3>过渡追踪与诊断（证据链 / 实际音符）</h3>
+    <div id="diag"></div>
     <h3>实际配乐（渲染事件）</h3>
     <canvas id="result-roll" width="1160" height="240"></canvas>
     <h3>校验</h3>

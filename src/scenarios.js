@@ -16,3 +16,17 @@ export const DEMO_SCENARIO = {
     { t: 134, mood: 'calm' },
   ],
 };
+
+// 边界条件：第二条请求在第 16 拍乐句的首个弱起音已排队（第 8 拍排队）、
+// 但尚未发声（首个弱起音第 14 拍）时到达。
+//  - legacy：拼接已提交语义下延后，第 16 拍进入歌，再经暮进入潮（下一乐句接管）；
+//  - immediate：立即取消未发声拼接，本边界第 16 拍改去潮。
+export const BOUNDARY_SCENARIO = {
+  start: 'theme_dawn',
+  until: 64,
+  note: '边界：6 请求歌；12.5 在首个弱起音发声前改请求潮',
+  requests: [
+    { t: 6, mood: 'heroic' },
+    { t: 12.5, mood: 'tense' },
+  ],
+};

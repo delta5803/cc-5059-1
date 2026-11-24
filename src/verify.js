@@ -7,6 +7,8 @@ const EPS = 1e-6;
 export function verifyRender(score, result) {
   const v = [];
   const { events, harmony, segments, log, frontier } = result;
+  const pickupMode = result.pickupMode || 'full';
+  const pickupsExpected = (sec) => (pickupMode === 'omit' ? 0 : (sec.pickup || []).length);
 
   for (const ev of events) {
     if (ev.t < -EPS) v.push(`事件时间倒退: ${ev.sec} ${ev.role} @${ev.t}`);
@@ -54,8 +56,8 @@ export function verifyRender(score, result) {
 
     const pickups = events.filter((e) => e.sec === next.secId && e.role === 'pickup'
       && e.t >= E - nextSec.pickupBeats - EPS && e.t < E - EPS);
-    if (pickups.length !== (nextSec.pickup || []).length) {
-      v.push(`接点@第${E}拍: 弱起音符数量 ${pickups.length} 与谱面 ${(nextSec.pickup || []).length} 不符`);
+    if (pickups.length !== pickupsExpected(nextSec)) {
+      v.push(`接点@第${E}拍: 弱起音符数量 ${pickups.length} 与谱面 ${pickupsExpected(nextSec)} 不符`);
     }
     for (const ev of pickups) {
       const h = harmonyAt(ev.t + 1e-3);
@@ -85,11 +87,13 @@ export function verifyRender(score, result) {
   }
 
   // 每个弱起事件都必须落在某个接点窗口内
-  for (const ev of events.filter((e) => e.role === 'pickup')) {
-    const sec = score.sections[ev.sec];
-    const ok = segments.some((s) => s.secId === ev.sec && s.startBeat > 0
-      && ev.t >= s.startBeat - sec.pickupBeats - EPS && ev.t < s.startBeat - EPS);
-    if (!ok) v.push(`弱起事件不在任何接点窗口内: ${ev.sec} @${ev.t}`);
+  if (pickupMode !== 'omit') {
+    for (const ev of events.filter((e) => e.role === 'pickup')) {
+      const sec = score.sections[ev.sec];
+      const ok = segments.some((s) => s.secId === ev.sec && s.startBeat > 0
+        && ev.t >= s.startBeat - sec.pickupBeats - EPS && ev.t < s.startBeat - EPS);
+      if (!ok) v.push(`弱起事件不在任何接点窗口内: ${ev.sec} @${ev.t}`);
+    }
   }
 
   // 计划路径与听闻一致（被抢占的计划除外；超出渲染时长的待定计划除外）
