@@ -1,0 +1,11 @@
+{
+  "name": "section-score-engine",
+  "version": "1.0.0",
+  "description": "交互配乐段落引擎：条件连接图 + 乐句边界调度 + 和声校验",
+  "type": "module",
+  "scripts": {
+    "serve": "node scripts/serve.mjs",
+    "test": "node --test 'test/*.test.mjs'",
+    "cli": "node cli/score-cli.mjs"
+  }
+}

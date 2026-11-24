@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>段落配乐引擎 · 编曲试听台</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header>
+  <h1>段落配乐引擎 <small>交互式段落调度 · 编曲试听台</small></h1>
+  <div id="transport">
+    <button id="btn-live" class="primary">▶ 开始现场</button>
+    <button id="btn-stop" disabled>■ 停止</button>
+    <span id="clock" class="mono">—</span>
+  </div>
+</header>
+
+<main>
+  <section class="panel" id="panel-sections">
+    <h2>段落编曲</h2>
+    <p class="hint">点击段落查看乐句并试听；段落关系见下方连接图，只有声明且通过乐理检查的连接才可用。</p>
+    <div id="section-list" class="cards"></div>
+    <div id="section-detail" class="hidden">
+      <div class="row between">
+        <h3 id="section-detail-title"></h3>
+        <button id="btn-audition">▶ 试听该段</button>
+      </div>
+      <canvas id="section-roll" width="860" height="180"></canvas>
+    </div>
+  </section>
+
+  <section class="panel" id="panel-context">
+    <h2>情境（现场切换情绪）</h2>
+    <div id="mood-buttons" class="row wrap"></div>
+    <p class="hint">现场播放时点击即发出情境请求；引擎按乐句边界 / 准备拍 / 和声规则调度，请求会被记录为可重放情境序列。</p>
+  </section>
+
+  <section class="panel" id="panel-status">
+    <h2>调度状态</h2>
+    <div class="grid2">
+      <div>
+        <h3>当前乐句</h3>
+        <div id="now-phrase" class="mono big">—</div>
+        <h3>待定出口</h3>
+        <div id="pending-exits" class="mono">—</div>
+        <h3>排队请求</h3>
+        <div id="queue" class="mono">—</div>
+      </div>
+      <div>
+        <h3>调度事件（最近承诺）</h3>
+        <div id="events" class="mono log"></div>
+        <canvas id="live-roll" width="520" height="150"></canvas>
+      </div>
+    </div>
+    <h3>调度日志</h3>
+    <div id="live-log" class="mono log"></div>
+  </section>
+
+  <section class="panel" id="panel-result">
+    <h2>结果区 · 过渡节奏与实际配乐</h2>
+    <div class="row wrap">
+      <button id="btn-render" class="primary">渲染并校验</button>
+      <button id="btn-replay">▶ 回放渲染结果</button>
+      <button id="btn-demo">载入示例情境</button>
+      <button id="btn-export">导出情境</button>
+      <label class="button-like">导入情境<input type="file" id="file-import" accept=".json" hidden></label>
+    </div>
+    <h3>情境序列（可重放）</h3>
+    <div id="scenario-view" class="mono">—</div>
+    <h3>过渡节奏（计划与接点，实际运算）</h3>
+    <div id="joins"></div>
+    <h3>实际配乐（渲染事件）</h3>
+    <canvas id="result-roll" width="1160" height="240"></canvas>
+    <h3>校验</h3>
+    <div id="verify" class="mono">—</div>
+    <h3>异常</h3>
+    <div id="exceptions" class="mono">—</div>
+  </section>
+
+  <section class="panel" id="panel-graph">
+    <h2>段落连接图（声明边 + 乐理检查）</h2>
+    <div id="links" class="mono"></div>
+  </section>
+</main>
+
+<script type="module" src="./src/ui.js"></script>
+</body>
+</html>
